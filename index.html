@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typewriter Welcome</title>
+    <title>Responsive Typewriter</title>
     <style>
-        /* Centers everything on the screen */
+        /* Centers everything and adds padding for small screens */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 0 20px; /* Prevents text from touching the edge of the phone */
+            box-sizing: border-box;
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
+            text-align: center; /* Keeps text centered if it drops to a new line */
         }
         
-        /* Styles the text and adds the blinking cursor */
+        /* Styles the text with fluid size and blinking cursor */
         h1 {
             color: #333333;
-            font-size: 3rem;
-            border-right: 4px solid #333333; /* The cursor */
+            /* Fluid typography: Minimum 1.8rem, scales dynamically with screen (6vw), Max 3.5rem */
+            font-size: clamp(1.8rem, 6vw, 3.5rem); 
+            border-right: 4px solid #333333;
             padding-right: 5px;
-            /* Animation for the blinking cursor */
+            margin: 0;
             animation: blink-cursor 0.8s steps(2, start) infinite;
         }
 
@@ -38,13 +42,13 @@
     <h1 id="typewriter-text"></h1>
 
     <script>
-        // The text we want to type out. Array.from ensures the emoji stays intact.
+        // The text we want to type out
         const textToType = Array.from("Selamat Datang 😊");
-        const speed = 150; // Typing speed in milliseconds (lower is faster)
+        const speed = 150; // Typing speed in milliseconds
         let index = 0;
         const textElement = document.getElementById("typewriter-text");
 
-        // The function that types out the text letter by letter
+        // The function that types out the text
         function typeWriter() {
             if (index < textToType.length) {
                 textElement.innerHTML += textToType[index];
