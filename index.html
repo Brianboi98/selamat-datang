@@ -7,11 +7,13 @@
     <style>
         :root {
             --text-color: #37352f;
+            --bg-color: #ffffff;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
                 --text-color: rgba(255, 255, 255, 0.81);
+                --bg-color: #191919;
             }
         }
 
@@ -24,7 +26,7 @@
             padding: 0 10px;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji";
-            background-color: transparent;
+            background-color: var(--bg-color);
             text-align: center;
             color: var(--text-color);
         }
