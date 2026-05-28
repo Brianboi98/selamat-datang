@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Typewriter</title>
+    <title>Looping Responsive Typewriter</title>
     <style>
         /* Centers everything and adds padding for small screens */
         body {
@@ -12,22 +12,23 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            padding: 0 20px; /* Prevents text from touching the edge of the phone */
+            padding: 0 20px;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
-            text-align: center; /* Keeps text centered if it drops to a new line */
+            text-align: center;
         }
         
         /* Styles the text with fluid size and blinking cursor */
         h1 {
             color: #333333;
-            /* Fluid typography: Minimum 1.8rem, scales dynamically with screen (6vw), Max 3.5rem */
             font-size: clamp(1.8rem, 6vw, 3.5rem); 
             border-right: 4px solid #333333;
             padding-right: 5px;
             margin: 0;
             animation: blink-cursor 0.8s steps(2, start) infinite;
+            /* Give it a fixed minimum height so the page doesn't jump when empty */
+            min-height: 4rem; 
         }
 
         /* The keyframes that make the cursor blink */
@@ -42,23 +43,42 @@
     <h1 id="typewriter-text"></h1>
 
     <script>
-        // The text we want to type out
         const textToType = Array.from("Selamat Datang 😊");
-        const speed = 150; // Typing speed in milliseconds
         let index = 0;
+        let isDeleting = false;
         const textElement = document.getElementById("typewriter-text");
 
-        // The function that types out the text
-        function typeWriter() {
-            if (index < textToType.length) {
-                textElement.innerHTML += textToType[index];
+        function loopTypeWriter() {
+            // Default typing speed
+            let typeSpeed = 150; 
+
+            if (isDeleting) {
+                index--;
+                typeSpeed = 75; // Deleting is twice as fast
+            } else {
                 index++;
-                setTimeout(typeWriter, speed);
             }
+
+            // Update the text on screen by slicing the array from the beginning to the current index
+            textElement.innerHTML = textToType.slice(0, index).join('');
+
+            // Check if we reached the end of the text
+            if (!isDeleting && index === textToType.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // Pause for 2 seconds before deleting
+            } 
+            // Check if we deleted everything
+            else if (isDeleting && index === 0) {
+                isDeleting = false;
+                typeSpeed = 500; // Pause for half a second before typing again
+            }
+
+            // Call the function again after the calculated delay
+            setTimeout(loopTypeWriter, typeSpeed);
         }
 
         // Start the typing effect when the page loads
-        window.onload = typeWriter;
+        window.onload = loopTypeWriter;
     </script>
 
 </body>
